@@ -46,13 +46,13 @@ jobs:
 
       # We will output publish files to the folder we previously created
       - name: Publish
-        run: dotnet publish  -c Release --no-restore --no-build --output ${{ secrets.LOCAL_PATH }}
+        run: dotnet publish  -c Release --no-restore --no-build --output /var/www/contact
 
       - name: Publish Deployment
         uses: burnett01/rsync-deployments@5.2.1
         with:
           switches: -avzr --delete
-          path: ${{ secrets.LOCAL_PATH }}
+          path: /var/www/contact
           remote_path: ${{ secrets.DEPLOY_PATH }}
           remote_host: ${{ secrets.DEPLOY_HOST }}
           remote_user: ${{ secrets.DEPLOY_USER }}
