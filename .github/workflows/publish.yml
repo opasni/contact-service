@@ -27,7 +27,7 @@ jobs:
       - name: Stop Service
         uses: appleboy/ssh-action@v0.1.10
         env:
-          SERVICENAME: $SERVICENAME
+          SERVICENAME: ${{ SERVICENAME }}
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
@@ -63,7 +63,7 @@ jobs:
       - name: Start Service
         uses: appleboy/ssh-action@v0.1.10
         env:
-          SERVICENAME: $SERVICENAME
+          SERVICENAME: ${{ SERVICENAME }}
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
