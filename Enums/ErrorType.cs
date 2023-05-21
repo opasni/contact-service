@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace services.Enums;
+namespace contact.Enums;
 
 /// <summary>
 /// Enumeration providing generic response description on errors.

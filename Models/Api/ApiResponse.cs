@@ -1,4 +1,4 @@
-namespace services.Models.Api
+namespace contact.Models.Api
 {
     using System.Net;
     using System.Text.Json;

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace services.Models.Web;
+namespace contact.Models.Web;
 
 public class ReCaptchaValidation
 {

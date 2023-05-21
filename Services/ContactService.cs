@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Caching.Memory;
-using services.Models;
-using services.Models.Web;
-using services.Services.Api;
+using contact.Models;
+using contact.Models.Web;
+using contact.Services.Api;
 
-namespace services.Services;
+namespace contact.Services;
 
 public interface IContactService
 {

@@ -1,6 +1,6 @@
-using services.Enums;
+using contact.Enums;
 
-namespace services.Exceptions;
+namespace contact.Exceptions;
 
 /// <summary>
 /// Simple exception implementation for api responses.

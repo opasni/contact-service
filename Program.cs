@@ -1,10 +1,10 @@
-using services.Filters;
-using services.Services;
-using services.Services.Api;
+using contact.Filters;
+using contact.Services;
+using contact.Services.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add contact to the container.
 
 builder.Services.AddControllers(options =>
 {
@@ -17,7 +17,7 @@ builder.Services.AddSwaggerGen();
 // Add memory caching.
 builder.Services.AddMemoryCache();
 
-// Configure custom services
+// Configure custom contact
 builder.Services.AddSingleton<IReCaptchaApiService, ReCaptchaApiService>();
 builder.Services.AddSingleton<IContactService, ContactService>();
 builder.Services.AddSingleton<IEmailService, EmailService>();

@@ -1,6 +1,6 @@
-﻿using services.Enums;
+﻿using contact.Enums;
 
-namespace services.Models.Web;
+namespace contact.Models.Web;
 public class ErrorMessage
 {
   /// <summary>

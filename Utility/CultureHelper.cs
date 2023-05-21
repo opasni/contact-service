@@ -1,4 +1,4 @@
-namespace services.Utility;
+namespace contact.Utility;
 
 public static class CultureHelper
 {

@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using services.Enums;
-using services.Exceptions;
-using services.Models.Web;
-using services.Utility;
+using contact.Enums;
+using contact.Exceptions;
+using contact.Models.Web;
+using contact.Utility;
 
-namespace services.Filters;
+namespace contact.Filters;
 
 public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 {

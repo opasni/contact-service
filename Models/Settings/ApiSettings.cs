@@ -1,4 +1,4 @@
-namespace services.Models.Settings;
+namespace contact.Models.Settings;
 
 public class ApiSettings
 {

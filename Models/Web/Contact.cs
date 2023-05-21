@@ -1,7 +1,7 @@
-using services.Utility;
+using contact.Utility;
 using System.ComponentModel.DataAnnotations;
 
-namespace services.Models;
+namespace contact.Models;
 
 public class Contact : ContactData
 {

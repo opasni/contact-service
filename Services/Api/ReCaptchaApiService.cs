@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
-using services.Exceptions;
-using services.Models.Api.ReCaptcha;
-using services.Models.Settings;
+using contact.Exceptions;
+using contact.Models.Api.ReCaptcha;
+using contact.Models.Settings;
 
-namespace services.Services.Api
+namespace contact.Services.Api
 {
   public interface IReCaptchaApiService
   {

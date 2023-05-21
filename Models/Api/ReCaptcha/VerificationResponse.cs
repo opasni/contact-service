@@ -1,4 +1,4 @@
-﻿namespace services.Models.Api.ReCaptcha;
+﻿namespace contact.Models.Api.ReCaptcha;
 
 public class VerificationResponse
 {

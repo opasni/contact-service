@@ -2,12 +2,12 @@
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using services.Models;
-using services.Models.Settings;
-using services.Utility;
+using contact.Models;
+using contact.Models.Settings;
+using contact.Utility;
 using System.Net;
 
-namespace services.Services
+namespace contact.Services
 {
     public interface IEmailService
     {

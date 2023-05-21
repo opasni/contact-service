@@ -1,11 +1,11 @@
-﻿using services.Models.Api;
-using services.Models.Settings;
-using services.Utility;
+﻿using contact.Models.Api;
+using contact.Models.Settings;
+using contact.Utility;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
-namespace services.Services.Api
+namespace contact.Services.Api
 {
     public abstract class ApiServiceBase
     {

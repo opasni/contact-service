@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using services.Models;
-using services.Models.Web;
-using services.Services;
+using contact.Models;
+using contact.Models.Web;
+using contact.Services;
 
-namespace services.Controllers;
+namespace contact.Controllers;
 
 /// <summary>
 /// Class describing controller for contact requests.
