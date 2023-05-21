@@ -21,16 +21,18 @@ jobs:
     # A sequence of tasks that will execute as part of the job
     steps:
       # Checks out repository so our job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       # Stop the production service during deployment.
       - name: Stop Service
         uses: appleboy/ssh-action@v0.1.10
+        env:
+          SERVICENAME: $SERVICENAME
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
-          script: stop-service.sh contact
+          script: ./stop-service.sh
 
       # Setup the .NET enviroment
       - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
@@ -60,8 +62,10 @@ jobs:
 
       - name: Start Service
         uses: appleboy/ssh-action@v0.1.10
+        env:
+          SERVICENAME: $SERVICENAME
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
-          script: start-service.sh contact
+          script: ./start-service.sh
