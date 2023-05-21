@@ -46,7 +46,7 @@ jobs:
 
       # We will output publish files to the folder we previously created
       - name: Publish
-        run: dotnet publish  -c Release --no-restore --no-build ${{ secrets.LOCAL_PATH }}
+        run: dotnet publish  -c Release --no-restore --no-build --output ${{ secrets.LOCAL_PATH }}
 
       - name: Publish Deployment
         uses: burnett01/rsync-deployments@5.2.1
