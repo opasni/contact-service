@@ -26,13 +26,11 @@ jobs:
       # Stop the production service during deployment.
       - name: Stop Service
         uses: appleboy/ssh-action@v0.1.10
-        env:
-          SERVICENAME: ${{ env.SERVICENAME }}
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
-          script: ./stop-service.sh
+          script: ./stop-service.sh ${{ secrets.SERVICENAME }}
 
       # Setup the .NET enviroment
       - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
@@ -62,10 +60,8 @@ jobs:
 
       - name: Start Service
         uses: appleboy/ssh-action@v0.1.10
-        env:
-          SERVICENAME: ${{ env.SERVICENAME }}
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
-          script: ./start-service.sh
+          script: ./start-service.sh ${{ secrets.SERVICENAME }}
