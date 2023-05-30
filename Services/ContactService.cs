@@ -1,7 +1,9 @@
 using Microsoft.Extensions.Caching.Memory;
-using contact.Models;
 using contact.Models.Web;
 using contact.Services.Api;
+using Microsoft.Extensions.Options;
+using contact.Models.Settings;
+using contact.Utility.Language;
 
 namespace contact.Services;
 
@@ -24,6 +26,7 @@ public interface IContactService
 
 public class ContactService : IContactService
 {
+  private readonly EmailSettings settings;
   private readonly ILogger logger;
   private readonly IMemoryCache memoryCache;
   private readonly IEmailService emailService;
@@ -31,6 +34,7 @@ public class ContactService : IContactService
 
   public ContactService(
      ILogger<ContactService> logger,
+     IOptions<EmailSettings> options,
      IMemoryCache memoryCache,
      IEmailService emailService,
      IReCaptchaApiService reCaptchaApi)
@@ -39,6 +43,7 @@ public class ContactService : IContactService
     this.memoryCache = memoryCache;
     this.emailService = emailService;
     this.reCaptchaApi = reCaptchaApi;
+    this.settings = options.Value;
   }
 
   public Contact CreateContactRequest(ContactData contactData)
@@ -63,8 +68,34 @@ public class ContactService : IContactService
     {
       throw new UnauthorizedAccessException();
     }
-    var email = emailService.CreateMail(contactData, contactData.Subject, contactData.Text);
 
-    await emailService.SendAsync(email);
+    var subject = CultureHelper.Translatable[contactData.LanguageId]["subject"][contactData.Subject];
+    var messageSystem = CultureHelper.Translatable[contactData.LanguageId]["feedback"]["system"];
+    messageSystem = messageSystem.Replace("{{name}}", contactData.Name);
+    messageSystem = messageSystem.Replace("{{email}}", contactData.Email);
+    messageSystem = messageSystem.Replace("{{subject}}", subject);
+    messageSystem = messageSystem.Replace("{{message}}", contactData.Message);
+    // Send the notification
+    var notify = emailService.CreateMail(new Receiver
+    {
+      Email = settings.ContactEmail,
+      Name = settings.DisplayName
+    }, subject, messageSystem);
+
+    // Set the reply_to header for easier communication.
+    notify.ReplyTo.Add(new MimeKit.MailboxAddress(contactData.Name, contactData.Email));
+    await emailService.SendAsync(notify);
+
+    var messageUser = CultureHelper.Translatable[contactData.LanguageId]["feedback"]["user"];
+    // Send confirmation email to the user.
+    var confirm = emailService.CreateMail(new Receiver
+    {
+      Email = contactData.Email,
+      Name = contactData.Name
+    }, subject, messageUser);
+
+    // Set the reply_to header for easier communication.
+    notify.ReplyTo.Add(new MimeKit.MailboxAddress(settings.DisplayName, settings.ContactEmail));
+    await emailService.SendAsync(confirm);
   }
 }

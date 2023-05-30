@@ -6,6 +6,7 @@ using contact.Models;
 using contact.Models.Settings;
 using contact.Utility;
 using System.Net;
+using contact.Models.Web;
 
 namespace contact.Services
 {
@@ -17,7 +18,7 @@ namespace contact.Services
         /// <param name="receivers">The e-mails (Key) and display names (Value) of the receivers.</param>
         /// <param name="subject">The mail subject.</param>
         /// <param name="message">The mail message.</param>
-        MimeMessage CreateMail(ContactData receiver, string subject, string message);
+        MimeMessage CreateMail(Receiver receiver, string subject, string message);
 
         /// <summary>
         /// Sends the specified mail.
@@ -38,11 +39,11 @@ namespace contact.Services
             this.emailSettings = options.Value;
         }
 
-        public MimeMessage CreateMail(ContactData receiver, string subject, string message)
+        public MimeMessage CreateMail(Receiver receiver, string subject, string message)
         {
             var mail = new MimeMessage();
 
-            mail.From.Add(new MailboxAddress(emailSettings.DisplayName, emailSettings.Username));
+            mail.From.Add(new MailboxAddress(emailSettings.DisplayName, emailSettings.Address));
             if (string.IsNullOrEmpty(receiver.Name))
             {
                 mail.To.Add(MailboxAddress.Parse(receiver.Email));

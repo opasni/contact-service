@@ -20,6 +20,11 @@ public class EmailSettings
   /// <value>The user name.</value>
   public string Username { get; set; }
   /// <summary>
+  /// Gets or sets the from email address.
+  /// </summary>
+  /// <value>The from email address.</value>
+  public string Address { get; set; }
+  /// <summary>
   /// Gets or sets the password.
   /// </summary>
   /// <value>The password.</value>
@@ -29,4 +34,9 @@ public class EmailSettings
   /// </summary>
   /// <value>The display name.</value>
   public string DisplayName { get; set; }
+  /// <summary>
+  /// Gets or sets the display name.
+  /// </summary>
+  /// <value>The display name.</value>
+  public string ContactEmail { get; set; }
 }
