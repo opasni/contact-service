@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using contact.Models;
 using contact.Models.Web;
 using contact.Services;
 

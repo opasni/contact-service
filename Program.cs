@@ -23,13 +23,15 @@ builder.Services.AddSingleton<IReCaptchaApiService, ReCaptchaApiService>();
 builder.Services.AddSingleton<IContactService, ContactService>();
 builder.Services.AddSingleton<IEmailService, EmailService>();
 
-
 // Configure options.
-var emailSettingsSection = builder.Configuration.GetSection("EmailSettings");
+var emailSettingsSection = builder.Configuration.GetSection(EmailSettings.Name);
 builder.Services.Configure<EmailSettings>(emailSettingsSection);
 
-var apiSettingsSection = builder.Configuration.GetSection("ApiSettings");
+var apiSettingsSection = builder.Configuration.GetSection(ApiSettings.Name);
 builder.Services.Configure<ApiSettings>(apiSettingsSection);
+
+var userSection = builder.Configuration.GetSection(UserData.Name);
+builder.Services.Configure<UserData>(userSection);
 
 var app = builder.Build();
 

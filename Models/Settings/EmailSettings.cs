@@ -2,7 +2,7 @@
 
 public class EmailSettings
 {
-  public const string Email = "EmailSettings";
+  public const string Name = "EmailSettings";
 
   /// <summary>
   /// Gets or sets the host.
