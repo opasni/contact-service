@@ -62,14 +62,17 @@ public class ContactService : IContactService
 
   public async Task VerifyAndSend(ReCaptchaValidation validation)
   {
-    var contactData = storage.Get(validation.ContactId);
+    var contactData = storage.Get<ContactData>(validation.ContactId);
     if (!await reCaptchaApi.Verify(validation.Recaptcha))
     {
       throw new UnauthorizedAccessException();
     }
+    var translations = CultureHelper.Translatable[contactData.LanguageId];
 
-    var subject = CultureHelper.Translatable[contactData.LanguageId]["subject"][contactData.Subject];
-    var messageSystem = CultureHelper.Translatable[contactData.LanguageId]["feedback"]["system"];
+    var subject = translations["subject"].ContainsKey(contactData.Subject)
+      ? translations["subject"][contactData.Subject]
+      : translations["subject"]["other"];
+    var messageSystem = translations["feedback"]["system"];
     messageSystem = messageSystem.Replace("{{name}}", contactData.Name);
     messageSystem = messageSystem.Replace("{{email}}", contactData.Email);
     messageSystem = messageSystem.Replace("{{subject}}", subject);
@@ -87,7 +90,7 @@ public class ContactService : IContactService
 
     try
     {
-      var messageUser = CultureHelper.Translatable[contactData.LanguageId]["feedback"]["user"];
+      var messageUser = translations["feedback"]["user"];
       // Send confirmation email to the user.
       var confirm = emailService.CreateMail(new Receiver
       {
@@ -99,7 +102,7 @@ public class ContactService : IContactService
       notify.ReplyTo.Add(new MimeKit.MailboxAddress(settings.DisplayName, settings.ContactEmail));
       await emailService.SendAsync(confirm);
     }
-    catch (SmtpCommandException ex)
+    catch (ApplicationException ex)
     {
       logger.LogWarning(ex, LoggingMessage.GetMessage(LogLevel.Warning, "Confirmation message not delivered due to {message}"), ex.Message);
     }

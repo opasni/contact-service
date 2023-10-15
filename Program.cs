@@ -15,13 +15,32 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var storageSection = builder.Configuration.GetSection(StorageSettings.Name);
+builder.Services.Configure<StorageSettings>(storageSection);
+var storage = storageSection.Get<StorageSettings>();
+
+switch (storage.Type)
+{
+  case "file":
+    builder.Services.AddSingleton<IContactStorage, FileStorage>();
+    break;
+  case "sqlite":
+    builder.Services.AddSingleton<IContactStorage, SqliteStorage>();
+    break;
+  case "memory":
+    builder.Services.AddMemoryCache();
+    builder.Services.AddSingleton<IContactStorage, MemoryStorage>();
+    break;
+  default:
+    throw new NotImplementedException("Storage type not implemented");
+}
+
 // Add memory caching.
-builder.Services.AddMemoryCache();
+
 
 // Configure custom contact
 builder.Services.AddSingleton<IReCaptchaApiService, ReCaptchaApiService>();
 builder.Services.AddSingleton<IContactService, ContactService>();
-builder.Services.AddSingleton<IContactStorage, ContactStorage>();
 builder.Services.AddSingleton<IEmailService, EmailService>();
 
 // Configure options.

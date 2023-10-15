@@ -16,7 +16,7 @@ public static class CultureHelper
 
   public static readonly Dictionary<string, Dictionary<string, Dictionary<string, string>>> Translatable = new()
   {
-    { CultureHelper.EN, new()
+    { EN, new()
       {
         { "subject", new()
           {
@@ -35,7 +35,7 @@ public static class CultureHelper
         }
       }
     },
-    { CultureHelper.DE, new()
+    { DE, new()
       {
         { "subject", new()
           {
@@ -54,7 +54,7 @@ public static class CultureHelper
         }
       }
     },
-    { CultureHelper.SI, new()
+    { SI, new()
       {
         { "subject", new()
           {
