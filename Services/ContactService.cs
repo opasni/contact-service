@@ -4,6 +4,8 @@ using contact.Services.Api;
 using Microsoft.Extensions.Options;
 using contact.Models.Settings;
 using contact.Utility.Language;
+using contact.Utility;
+using MailKit.Net.Smtp;
 
 namespace contact.Services;
 
@@ -83,16 +85,23 @@ public class ContactService : IContactService
     notify.ReplyTo.Add(new MimeKit.MailboxAddress(contactData.Name, contactData.Email));
     await emailService.SendAsync(notify);
 
-    var messageUser = CultureHelper.Translatable[contactData.LanguageId]["feedback"]["user"];
-    // Send confirmation email to the user.
-    var confirm = emailService.CreateMail(new Receiver
+    try
     {
-      Email = contactData.Email,
-      Name = contactData.Name
-    }, subject, messageUser);
+      var messageUser = CultureHelper.Translatable[contactData.LanguageId]["feedback"]["user"];
+      // Send confirmation email to the user.
+      var confirm = emailService.CreateMail(new Receiver
+      {
+        Email = contactData.Email,
+        Name = contactData.Name
+      }, subject, messageUser);
 
-    // Set the reply_to header for easier communication.
-    notify.ReplyTo.Add(new MimeKit.MailboxAddress(settings.DisplayName, settings.ContactEmail));
-    await emailService.SendAsync(confirm);
+      // Set the reply_to header for easier communication.
+      notify.ReplyTo.Add(new MimeKit.MailboxAddress(settings.DisplayName, settings.ContactEmail));
+      await emailService.SendAsync(confirm);
+    }
+    catch (SmtpCommandException ex)
+    {
+      logger.LogWarning(ex, LoggingMessage.GetMessage(LogLevel.Warning, "Confirmation message not delivered due to {message}"), ex.Message);
+    }
   }
 }
