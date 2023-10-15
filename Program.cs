@@ -21,6 +21,7 @@ builder.Services.AddMemoryCache();
 // Configure custom contact
 builder.Services.AddSingleton<IReCaptchaApiService, ReCaptchaApiService>();
 builder.Services.AddSingleton<IContactService, ContactService>();
+builder.Services.AddSingleton<IContactStorage, ContactStorage>();
 builder.Services.AddSingleton<IEmailService, EmailService>();
 
 // Configure options.

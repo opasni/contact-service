@@ -28,19 +28,19 @@ public class ContactService : IContactService
 {
   private readonly EmailSettings settings;
   private readonly ILogger logger;
-  private readonly IMemoryCache memoryCache;
   private readonly IEmailService emailService;
+  private readonly IContactStorage storage;
   private readonly IReCaptchaApiService reCaptchaApi;
 
   public ContactService(
      ILogger<ContactService> logger,
      IOptions<EmailSettings> options,
-     IMemoryCache memoryCache,
+     IContactStorage storage,
      IEmailService emailService,
      IReCaptchaApiService reCaptchaApi)
   {
     this.logger = logger;
-    this.memoryCache = memoryCache;
+    this.storage = storage;
     this.emailService = emailService;
     this.reCaptchaApi = reCaptchaApi;
     this.settings = options.Value;
@@ -49,7 +49,7 @@ public class ContactService : IContactService
   public Contact CreateContactRequest(ContactData contactData)
   {
     Guid contactId = Guid.NewGuid();
-    memoryCache.Set(contactId, contactData);
+    storage.Set(contactId, contactData);
 
     return new Contact
     {
@@ -60,10 +60,7 @@ public class ContactService : IContactService
 
   public async Task VerifyAndSend(ReCaptchaValidation validation)
   {
-    if (!memoryCache.TryGetValue(validation.ContactId, out ContactData contactData))
-    {
-      throw new KeyNotFoundException();
-    }
+    var contactData = storage.Get(validation.ContactId);
     if (!await reCaptchaApi.Verify(validation.Recaptcha))
     {
       throw new UnauthorizedAccessException();
